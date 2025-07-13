@@ -1,9 +1,10 @@
-import { Injectable } from "@nestjs/common";
-import { Film, FilmSchedule } from './types/films'
+import { Injectable, Param } from "@nestjs/common";
+import { Film, FilmSchedule } from './entities/films'
+import { FilmItemDto, FilmsDto, FindOneParamsDto } from "src/films/dto/films.dto";
 
 @Injectable()
 export class FilmsInMemoryRepository {
-    private films: Film[] = [
+    private films: FilmItemDto[] = [
         {
           "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
           "rating": 2.9,
@@ -59,22 +60,25 @@ export class FilmsInMemoryRepository {
     ]
 
 
-    findAll(): Film[] {
+    findAll(): FilmsDto {
         console.log('films in repository: ', this.films);
-        return this.films;
+        return {
+            total: 81692856.64964156,
+            items: this.films
+        }
     }
 
-    findById(id: string): Film | number {
-        const foundFilm = this.films.find((item) => item.id === id);
+    findById(@Param() params: FindOneParamsDto): FilmItemDto | number {
+        const foundFilm = this.films.find((item) => item.id === params.id);
         if (!foundFilm)
             return -1;
         else
             return foundFilm;
     }
 
-    getFilmSchedule(id: string): FilmSchedule {
-        console.log("getFilmSchedule id: ", id);
-        const filmSchedule = this.schedule.filter((item) => item.id === id);
+    getFilmSchedule(@Param() params: FindOneParamsDto): FilmSchedule {
+        console.log("getFilmSchedule id: ", params.id);
+        const filmSchedule = this.schedule.filter((item) => item.id === params.id);
         return filmSchedule;
     }
 }

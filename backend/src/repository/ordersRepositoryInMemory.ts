@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Order } from "./types/orders";
+import { Order } from "./entities/orders";
 import { randomUUID } from "crypto";
 
 @Injectable()

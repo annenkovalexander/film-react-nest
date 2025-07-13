@@ -1,5 +1,7 @@
 //TODO описать DTO для запросов к /films
-export class getFilmData  {
+import { IsUUID } from 'class-validator';
+
+export class FilmItemDto  {
     "id": string;
     "rating": number;
     "director": string;
@@ -11,12 +13,26 @@ export class getFilmData  {
     "cover": string;
   }
 
-export class getFilmSchedule {
-    "id": string;
+export class FilmsDto {
+  "total": number;
+  "items": FilmItemDto[];
+}
+
+export class ScheduleItemDto {
     "daytime": string;
     "hall": string;
     "rows": number;
     "seats": number;
     "price": number;
     "taken": string[];
-}[];
+};
+
+export class Schedule {
+  "total": number;
+  "items": ScheduleItemDto[]
+}
+
+export class FindOneParamsDto {
+  @IsUUID()
+  id: string;
+}

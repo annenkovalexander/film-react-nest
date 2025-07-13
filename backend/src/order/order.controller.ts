@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { Order } from 'src/repository/types/orders';
+import { Order } from 'src/repository/entities/orders';
 import { OrderService } from './order.service';
 
 @Controller('order')

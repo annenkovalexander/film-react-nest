@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FilmsInMemoryRepository } from 'src/repository/filmsRepositioryInMemory';
-import { Film, FilmSchedule } from 'src/repository/types/films';
+import { Film, FilmSchedule } from 'src/repository/entities/films';
 
 type FilmsResult = {
     total: number,
@@ -16,10 +16,7 @@ type FilmScheduleResult = {
 export class FilmsService {
     constructor(private readonly filmsRepository: FilmsInMemoryRepository) {}
     findAll():FilmsResult {
-        return {
-            total: 81692856.64964156,
-            items: this.filmsRepository.findAll()
-        }
+        return this.filmsRepository.findAll();
     }
     getSchedule(id: string): FilmScheduleResult {
         return {
