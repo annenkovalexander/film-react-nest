@@ -15,7 +15,7 @@ import { OrderModule } from './repository/orders.module';
       cache: true,
     }),
     // @todo: Добавьте раздачу статических файлов из public
-    MongooseModule.forRoot('mongodb://localhost:27017/Film'),
+    MongooseModule.forRoot(process.env.DATABASE_URL),
     FilmModule,
     OrderModule,
     ServeStaticModule.forRoot({

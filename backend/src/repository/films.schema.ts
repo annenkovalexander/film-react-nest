@@ -49,7 +49,7 @@ export class FilmSchedule {
 
 export const FilmScheduleSchema = SchemaFactory.createForClass(FilmSchedule);
 
-@Schema({ collection: 'film_collection' })
+@Schema({ collection: 'films' })
 export class Film {
   @Prop({
     required: true,

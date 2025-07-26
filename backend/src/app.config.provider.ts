@@ -7,7 +7,7 @@ export const configProvider = {
     //TODO прочесть переменнные среды
     database: {
       driver: process.env.DATABASE_DRIVER || 'mongodb',
-      url: process.env.DATABASE_URL || 'mongodb://0.0.0.0:27017/',
+      url: process.env.DATABASE_URL || 'mongodb://0.0.0.0:27017/afisha',
     },
   },
 };
