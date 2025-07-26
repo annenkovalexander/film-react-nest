@@ -39,6 +39,8 @@ jobs:
     - name: Start project
       run: bash $DIR_TESTS/bin/start_project.sh
     - name: Wait for server to be ready
-      run: npx wait-on http://localhost:3000
+      run: npx wait-on http://127.0.0.1:3000
+    - name: Check listening processes
+      run: ss -tlnp | grep 3000 || echo "Port 3000 is not listening"
     - name: Run tests
       run: bash $DIR_TESTS/bin/endpoints.sh
