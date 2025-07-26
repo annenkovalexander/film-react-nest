@@ -11,7 +11,7 @@ export class FilmController {
     const films = await this.filmsService.findAll();
     return {
       total: films.length,
-      items: films
+      items: films,
     };
   }
   @Get(':id/schedule')
@@ -19,7 +19,7 @@ export class FilmController {
     const schedule = await this.filmsService.getSchedule(id);
     return {
       total: schedule.length,
-      items: schedule
+      items: schedule,
     };
   }
 }
