@@ -1,28 +1,38 @@
 import { Injectable } from '@nestjs/common';
-import { FilmsInMemoryRepository } from 'src/repository/filmsRepositioryInMemory';
-import { Film, FilmSchedule } from 'src/repository/entities/films';
-
-type FilmsResult = {
-    total: number,
-    items: Film[]
-}
-
-type FilmScheduleResult = {
-    total: number;
-    items: FilmSchedule
-}
+import { FilmsRepository } from 'src/repository/filmsRepositioryInMongoDB';
+import { Film, FilmSchedule } from 'src/repository/films.schema';
+import { FilmDocument } from 'src/repository/films.schema';
+import { Ticket } from 'src/repository/orders.schema';
 
 @Injectable()
 export class FilmsService {
-    constructor(private readonly filmsRepository: FilmsInMemoryRepository) {}
-    findAll():FilmsResult {
-        return this.filmsRepository.findAll();
-    }
-    getSchedule(id: string): FilmScheduleResult {
-        return {
-            total: 81692856.64964156,
-            items: this.filmsRepository.getFilmSchedule(id)
-        }
-    }
-}
+  constructor(private readonly filmsRepository: FilmsRepository) {}
+  async findAll(): Promise<Film[]> {
+    return this.filmsRepository.findAll();
+  }
 
+  async getSchedule(id: string): Promise<FilmSchedule[] | []> {
+    return this.filmsRepository.getFilmSchedule(id);
+  }
+
+  async getSession(tickets: Ticket[]): Promise<FilmSchedule | undefined> {
+    const sessionId = tickets && tickets.length ? tickets[0].session : '';
+    const session = await this.filmsRepository.findBySessionId(sessionId);
+    return session;
+  }
+
+  async getOccupatedSeats(tickets: Ticket[]): Promise<string[] | []> {
+    const session = await this.getSession(tickets);
+    const taken = session.taken;
+    return taken;
+  }
+
+  async setOccupatedSeats(tickets: Ticket[]): Promise<FilmDocument | []> {
+    const session = await this.getSession(tickets);
+    const filmDocument = await this.filmsRepository.updateScheduleTaken(
+      session,
+      tickets,
+    );
+    return filmDocument;
+  }
+}
