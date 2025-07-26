@@ -25,6 +25,12 @@ jobs:
       run: bash $DIR_TESTS/bin/backend.sh
   test_endpoints:
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:5.0
+        ports:
+          - 27017:27017
+        options: --bind_ip_all
     steps:
     - name: Set up GitHub Actions
       uses: actions/checkout@v4
@@ -32,6 +38,8 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 18.x
+    - name: Set env variable for DB URL
+      run: echo "DATABASE_URL=mongodb://localhost:27017" >> $GITHUB_ENV
     - name: Get testing lib
       run: set -eu && git clone --depth 1 $REP_TESTS $DIR_TESTS
     - name: Install dependencies
