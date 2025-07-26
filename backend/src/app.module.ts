@@ -1,19 +1,16 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { ConfigModule } from '@nestjs/config';
 import * as path from 'node:path';
 
 import { AppConfig, configProvider } from './app.config.provider';
 import { FilmModule } from './repository/films.module';
 import { OrderModule } from './repository/orders.module';
+import { ConfigModule } from './app.config.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      cache: true,
-    }),
+    ConfigModule,
     // @todo: Добавьте раздачу статических файлов из public
     MongooseModule.forRootAsync({
       useFactory: async (config: AppConfig) => ({
