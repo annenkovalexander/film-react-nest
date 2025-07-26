@@ -34,6 +34,8 @@ jobs:
         node-version: 18.x
     - name: Get testing lib
       run: set -eu && git clone --depth 1 $REP_TESTS $DIR_TESTS
+    - name: Install dependencies
+      run: npm install
     - name: Start project
       run: bash $DIR_TESTS/bin/start_project.sh
     - name: Wait for server to be ready
