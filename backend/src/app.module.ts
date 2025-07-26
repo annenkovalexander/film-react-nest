@@ -4,7 +4,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as path from 'node:path';
 
-import { configProvider } from './app.config.provider';
+import { AppConfig, configProvider } from './app.config.provider';
 import { FilmModule } from './repository/films.module';
 import { OrderModule } from './repository/orders.module';
 
@@ -16,11 +16,10 @@ import { OrderModule } from './repository/orders.module';
     }),
     // @todo: Добавьте раздачу статических файлов из public
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('DATABASE_URL'),
+      useFactory: async (config: AppConfig) => ({
+        uri: config.database.url,
       }),
-      inject: [ConfigService],
+      inject: ['CONFIG'],
     }),
     FilmModule,
     OrderModule,
