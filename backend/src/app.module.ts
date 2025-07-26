@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as path from 'node:path';
 
 import { configProvider } from './app.config.provider';
@@ -15,7 +15,13 @@ import { OrderModule } from './repository/orders.module';
       cache: true,
     }),
     // @todo: Добавьте раздачу статических файлов из public
-    MongooseModule.forRoot(process.env.DATABASE_URL),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('DATABASE_URL'),
+      }),
+      inject: [ConfigService],
+    }),
     FilmModule,
     OrderModule,
     ServeStaticModule.forRoot({
