@@ -13,7 +13,7 @@ export class OrderController {
       phone: order.phone,
       tickets: order.tickets.map((ticket) => ({ ...ticket })),
     };
-    // new Order(order.email, order.phone, order.tickets.map((ticket) => new Ticket({...ticket})));
+
     const orderResponse: Order =
       await this.orderService.createOrder(serviceOrder);
     return {

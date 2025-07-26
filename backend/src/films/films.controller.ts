@@ -8,16 +8,18 @@ export class FilmController {
   constructor(private readonly filmsService: FilmsService) {}
   @Get()
   async findAll(): Promise<FilmsResponse> {
+    const films = await this.filmsService.findAll();
     return {
-      total: 81692856.64964156,
-      items: await this.filmsService.findAll(),
+      total: films.length,
+      items: films
     };
   }
   @Get(':id/schedule')
   async getSchedule(@Param('id') id: string): Promise<ScheduleResponse> {
+    const schedule = await this.filmsService.getSchedule(id);
     return {
-      total: 81692856.64964156,
-      items: await this.filmsService.getSchedule(id),
+      total: schedule.length,
+      items: schedule
     };
   }
 }
