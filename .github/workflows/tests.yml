@@ -25,12 +25,6 @@ jobs:
       run: bash $DIR_TESTS/bin/backend.sh
   test_endpoints:
     runs-on: ubuntu-latest
-    services:
-      mongodb:
-        image: mongo:5.0
-        ports:
-          - 27017:27017
-        options: --bind_ip_all
     steps:
     - name: Set up GitHub Actions
       uses: actions/checkout@v4
@@ -47,6 +41,6 @@ jobs:
     - name: Start project
       run: bash $DIR_TESTS/bin/start_project.sh
     - name: Check listening processes
-      run: ss -tlnp | grep 3000 || echo "Port 3000 is not listening"
+      run: ss -tlnp | grep 27017 || echo "Port 3000 is not listening"
     - name: Run tests
       run: bash $DIR_TESTS/bin/endpoints.sh
