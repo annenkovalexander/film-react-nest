@@ -1,5 +1,8 @@
 // import { ConfigModule } from '@nestjs/config';
 
+const DATABASE_URL = process.env.DATABASE_URL;
+console.log('DATABASE_URL: ', DATABASE_URL);
+
 export const configProvider = {
   provide: 'CONFIG',
   useValue: <AppConfig>{

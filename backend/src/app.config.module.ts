@@ -5,4 +5,4 @@ import { configProvider } from './app.config.provider';
   providers: [configProvider],
   exports: [configProvider],
 })
-export class ConfigModule {}
+export class AppConfigModule {}
