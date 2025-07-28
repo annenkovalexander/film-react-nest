@@ -13,12 +13,12 @@ import { ConfigModule } from './app.config.module';
     ConfigModule,
     // @todo: Добавьте раздачу статических файлов из public
     MongooseModule.forRootAsync({
+      imports: [ConfigModule],
       useFactory: async (config: AppConfig) => ({
         uri: config.database.url,
       }),
-      inject: ['CONFIG'],
+      inject: ['CONFIG']
     }),
-    FilmModule,
     OrderModule,
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '..', 'public', 'content'), // корень — папка public/content

@@ -6,4 +6,4 @@ import { configProvider } from "./app.config.provider";
     exports: [configProvider]
 })
 
-export class ConfigModule{};
+export class ConfigModule {};
