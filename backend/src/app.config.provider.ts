@@ -9,7 +9,7 @@ export const configProvider = {
     //TODO прочесть переменнные среды
     database: {
       driver: process.env.DATABASE_DRIVER,
-      url: process.env.DATABASE_URL
+      url: process.env.DATABASE_URL,
     },
   },
 };

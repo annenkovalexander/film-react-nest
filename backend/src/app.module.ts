@@ -3,10 +3,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'node:path';
 
-import { AppConfig, configProvider } from './app.config.provider';
+import { configProvider } from './app.config.provider';
 import { FilmModule } from './repository/films.module';
 import { OrderModule } from './repository/orders.module';
-import { AppConfigModule } from './app.config.module';
 import { DatabaseModule } from './database.module';
 import { ConfigModule } from '@nestjs/config';
 
@@ -14,10 +13,10 @@ import { ConfigModule } from '@nestjs/config';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env'
+      envFilePath: '.env',
     }),
     // @todo: Добавьте раздачу статических файлов из public
-    MongooseModule.forRoot(process.env.DATABASE_URL+'/afisha'),
+    MongooseModule.forRoot(process.env.DATABASE_URL + '/afisha'),
     // MongooseModule.forRootAsync({
     //   imports: [AppConfigModule],
     //   useFactory: async (config: AppConfig) => {
