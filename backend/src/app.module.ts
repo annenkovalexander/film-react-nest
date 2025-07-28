@@ -15,6 +15,7 @@ import { ConfigModule } from './app.config.module';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: AppConfig) => {
+        console.log('config: ', config);
         return {
           uri: config.database.url,
         };
