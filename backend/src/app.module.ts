@@ -16,7 +16,7 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: '.env',
     }),
     // @todo: Добавьте раздачу статических файлов из public
-    MongooseModule.forRoot(process.env.DATABASE_URL + '/afisha'),
+    MongooseModule.forRoot(process.env.DATABASE_URL),
     // MongooseModule.forRootAsync({
     //   imports: [AppConfigModule],
     //   useFactory: async (config: AppConfig) => {
