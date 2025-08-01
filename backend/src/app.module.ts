@@ -21,8 +21,6 @@ import { AppConfigModule } from './app.config.module';
     MongooseModule.forRootAsync({
       imports: [AppConfigModule],
       useFactory: async (config: AppConfig) => {
-        console.log('config: ', config);
-        console.log('url: ', process.env);
         return {
           uri: config.database.url + '/practicum',
         };
