@@ -41,8 +41,11 @@ import { DatabaseService } from './database.service';
   providers: [configProvider, DatabaseService],
 })
 export class AppModule {
-  constructor(){
+  constructor(private readonly databaseService: DatabaseService){
     console.log("app module created");
   }
-  
+  async onModuleInit() {
+    const databases = await this.databaseService.listDatabases();
+    console.log('Список баз данных:', databases);
+  }
 }

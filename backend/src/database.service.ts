@@ -21,4 +21,9 @@ export class DatabaseService {
       console.log('MongoDB уже подключен (readyState = 1) при инициализации DatabaseService');
     }
   }
+  async listDatabases(): Promise<string[]> {
+    const adminDb = this.connection.db.admin();
+    const result = await adminDb.listDatabases();
+    return result.databases.map(db => db.name);
+  }
 }
