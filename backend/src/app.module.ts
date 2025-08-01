@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Inject, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'node:path';
@@ -8,6 +8,7 @@ import { FilmModule } from './repository/films.module';
 import { OrderModule } from './repository/orders.module';
 import { DatabaseModule } from './database.module';
 import { ConfigModule } from '@nestjs/config';
+import { DatabaseService } from './database.service';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: '.env',
     }),
     // @todo: Добавьте раздачу статических файлов из public
-    MongooseModule.forRoot(process.env.DATABASE_URL+'/'),
+    MongooseModule.forRoot(process.env.DATABASE_URL),
     // MongooseModule.forRootAsync({
     //   imports: [AppConfigModule],
     //   useFactory: async (config: AppConfig) => {
@@ -37,6 +38,11 @@ import { ConfigModule } from '@nestjs/config';
     }),
   ],
   controllers: [],
-  providers: [configProvider],
+  providers: [configProvider, DatabaseService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(){
+    console.log("app module created");
+  }
+  
+}
