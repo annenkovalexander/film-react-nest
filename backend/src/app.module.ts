@@ -17,7 +17,7 @@ import { DatabaseService } from './database.service';
       envFilePath: '.env',
     }),
     // @todo: Добавьте раздачу статических файлов из public
-    MongooseModule.forRoot(process.env.DATABASE_URL),
+    MongooseModule.forRoot(process.env.DATABASE_URL + '/practicum'),
     // MongooseModule.forRootAsync({
     //   imports: [AppConfigModule],
     //   useFactory: async (config: AppConfig) => {
