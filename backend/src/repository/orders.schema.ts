@@ -7,10 +7,6 @@ export type TicketDocument = Ticket & Document;
 export class Ticket {
   @Prop({
     required: true,
-  })
-  day: string;
-  @Prop({
-    required: true,
     type: Date,
     validate: {
       validator: (v: any) => !isNaN(Date.parse(v)),
@@ -52,10 +48,6 @@ export class Ticket {
     },
   })
   session: string;
-  @Prop({
-    required: true,
-  })
-  time: string;
 }
 
 export const TicketSchema = SchemaFactory.createForClass(Ticket);
