@@ -1,35 +1,15 @@
 //TODO описать DTO для запросов к /films
 import { IsUUID } from 'class-validator';
+import { Film, FilmSchedule } from 'src/repository/films.schema';
 
-export class FilmItemDto  {
-    "id": string;
-    "rating": number;
-    "director": string;
-    "tags": string[];
-    "title": string;
-    "about": string;
-    "description": string;
-    "image": string;
-    "cover": string;
-  }
-
-export class FilmsDto {
-  "total": number;
-  "items": FilmItemDto[];
+export class FilmsResponse {
+  'total': number;
+  'items': Film[];
 }
 
-export class ScheduleItemDto {
-    "daytime": string;
-    "hall": string;
-    "rows": number;
-    "seats": number;
-    "price": number;
-    "taken": string[];
-};
-
-export class Schedule {
-  "total": number;
-  "items": ScheduleItemDto[]
+export class ScheduleResponse {
+  'total': number;
+  'items': FilmSchedule[] | [];
 }
 
 export class FindOneParamsDto {

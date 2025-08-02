@@ -1,21 +1,25 @@
-export type Film = {
-    "id": string;
-    "rating": number;
-    "director": string;
-    "tags": string[];
-    "title": string;
-    "about": string;
-    "description": string;
-    "image": string;
-    "cover": string;
+export class Film {
+  constructor(
+    public readonly id: string,
+    public rating: number,
+    public director: string,
+    public tags: string[],
+    public title: string,
+    public about: string,
+    public description: string,
+    public image: string,
+    public cover: string,
+  ) {}
 }
 
-export type FilmSchedule = {
-    "id": string;
-    "daytime": string;
-    "hall": string;
-    "rows": number;
-    "seats": number;
-    "price": number;
-    "taken": string[];
-}[]
+export class FilmSchedule {
+  constructor(
+    public readonly id: string,
+    public daytime: string,
+    public hall: string,
+    public rows: number,
+    public seats: number,
+    public price: number,
+    public taken: string[],
+  ) {}
+}
