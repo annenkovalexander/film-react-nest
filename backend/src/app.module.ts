@@ -22,7 +22,7 @@ import { AppConfigModule } from './app.config.module';
       imports: [AppConfigModule],
       useFactory: async (config: AppConfig) => {
         return {
-          uri: config.database.url + '/practicum',
+          uri: config.database.url + config.database.database_name,
         };
       },
       inject: ['CONFIG'],
