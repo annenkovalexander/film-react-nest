@@ -10,15 +10,16 @@ import { AppConfigModule } from 'src/app.config.module';
 @Module({
   imports: [
     MongooseModule.forFeatureAsync([
-      { 
+      {
         imports: [AppConfigModule],
         name: Film.name,
         useFactory: (config: AppConfig) => {
           const collectionName = config.database.films_collection;
           return FilmSchema.set('collection', collectionName);
         },
-        inject: ['CONFIG'] 
-      }]),
+        inject: ['CONFIG'],
+      },
+    ]),
   ],
   providers: [FilmsService, FilmsRepository, configProvider],
   controllers: [FilmController],
