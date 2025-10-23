@@ -9,8 +9,10 @@ async function bootstrap() {
   app.setGlobalPrefix('api/afisha');
   app.enableCors();
   const config = new DocumentBuilder()
-    .setTitle('API проекта "Афиша"') 
-    .setDescription('Данный документ описывает получение списка фильмов, сеансов и заказ билетов')
+    .setTitle('API проекта "Афиша"')
+    .setDescription(
+      'Данный документ описывает получение списка фильмов, сеансов и заказ билетов',
+    )
     .setVersion('1.0')
     .build(); // Завершаем конфигурирование вызовом build
 

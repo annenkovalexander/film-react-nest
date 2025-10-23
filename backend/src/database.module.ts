@@ -1,8 +1,16 @@
 import { Module } from '@nestjs/common';
-import { DatabaseService } from './database.service';
+import { DatabaseServiceProvider } from './database.provider';
+import { AppConfigModule } from './app.config.module';
+import { MongoDatabaseService } from './database_mongodb.service';
+import { PostgresDatabaseService } from './database_posrgresql_service';
 
 @Module({
-  providers: [DatabaseService],
-  exports: [DatabaseService],
+  imports: [AppConfigModule],
+  providers: [
+    MongoDatabaseService,
+    PostgresDatabaseService,
+    DatabaseServiceProvider,
+  ],
+  exports: [DatabaseServiceProvider],
 })
 export class DatabaseModule {}
