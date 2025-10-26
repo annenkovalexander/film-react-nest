@@ -49,7 +49,7 @@ export class FilmSchedule {
 
 export const FilmScheduleSchema = SchemaFactory.createForClass(FilmSchedule);
 
-@Schema()
+@Schema({ timestamps: true })
 export class Film {
   @Prop({
     required: true,
@@ -109,6 +109,10 @@ export class Film {
   schedule: FilmSchedule[];
 }
 
-export type FilmDocument = Film & Document;
+export type FilmDocument = Film &
+  Document & {
+    createdAt: Date;
+    updatedAt: Date;
+  };
 
 export const FilmSchema = SchemaFactory.createForClass(Film);

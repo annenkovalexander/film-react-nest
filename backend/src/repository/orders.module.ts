@@ -1,30 +1,13 @@
+// repository/orders.module.ts
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Order, OrderSchema } from './orders.schema';
-import { OrderService } from 'src/order/order.service';
-import { OrderController } from 'src/order/order.controller';
-import { OrderRepository } from './ordersRepositoryInMongoDB';
-import { FilmModule } from './films.module';
-import { AppConfig, configProvider } from 'src/app.config.provider';
-import { AppConfigModule } from 'src/app.config.module';
+import { OrderService } from '../order/order.service'; // новый сервис
+import { OrderController } from '../order/order.controller'; // новый контроллер
+import { DatabaseDynamicModule } from 'src/database.dynamic.module';
+import { FilmModule } from './films.module'; // или '../films/films.module'
 
 @Module({
-  imports: [
-    MongooseModule.forFeatureAsync(
-      [
-        { 
-          imports: [AppConfigModule],
-          name: Order.name,
-          useFactory: (config: AppConfig) => {
-            const collectionName = config.database.orders_collection;
-            return OrderSchema.set('collection', collectionName);
-          },
-          inject: ['CONFIG']
-        }
-    ]),
-    FilmModule,
-  ],
-  providers: [OrderService, OrderRepository, configProvider],
+  imports: [DatabaseDynamicModule.forRootAsync(), FilmModule],
+  providers: [OrderService],
   controllers: [OrderController],
 })
 export class OrderModule {}

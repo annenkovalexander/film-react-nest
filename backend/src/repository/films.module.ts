@@ -1,27 +1,10 @@
+// repository/films.module.ts
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { FilmSchema, Film } from './films.schema';
-import { FilmsService } from 'src/films/films.service';
-import { FilmController } from 'src/films/films.controller';
-import { FilmsRepository } from './filmsRepositioryInMongoDB';
-import { AppConfig, configProvider } from 'src/app.config.provider';
-import { AppConfigModule } from 'src/app.config.module';
+import { FilmsService } from '../films/films.service';
+import { FilmController } from '../films/films.controller';
 
 @Module({
-  imports: [
-    MongooseModule.forFeatureAsync([
-      {
-        imports: [AppConfigModule],
-        name: Film.name,
-        useFactory: (config: AppConfig) => {
-          const collectionName = config.database.films_collection;
-          return FilmSchema.set('collection', collectionName);
-        },
-        inject: ['CONFIG'],
-      },
-    ]),
-  ],
-  providers: [FilmsService, FilmsRepository, configProvider],
+  providers: [FilmsService],
   controllers: [FilmController],
   exports: [FilmsService],
 })

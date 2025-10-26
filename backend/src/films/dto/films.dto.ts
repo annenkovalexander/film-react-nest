@@ -1,6 +1,6 @@
 //TODO описать DTO для запросов к /films
 import { IsUUID } from 'class-validator';
-import { Film, FilmSchedule } from 'src/repository/films.schema';
+import { Film, FilmSchedule } from 'src/repository/mongodb/schemas/films.schema';
 
 export class FilmsResponse {
   'total': number;

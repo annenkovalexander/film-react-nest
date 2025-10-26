@@ -47,7 +47,11 @@ export class Ticket {
       message: (props) => `${props.value} это не UUID!`,
     },
   })
-  session: string;
+  @Prop({
+    required: true,
+    type: String,
+  })
+  sessionId: string;
 }
 
 export const TicketSchema = SchemaFactory.createForClass(Ticket);
