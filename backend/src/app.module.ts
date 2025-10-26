@@ -12,7 +12,6 @@ import { AppConfigModule } from './app.config.module';
 
 @Module({
   imports: [
-    // ConfigModule ДОЛЖЕН БЫТЬ ПЕРВЫМ
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -22,8 +21,11 @@ import { AppConfigModule } from './app.config.module';
     FilmModule,
     OrderModule,
     ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, '..', 'public', 'content'),
+      rootPath: path.join(__dirname, 'public', 'content'), // ← ИСПРАВЛЕНО!
       serveRoot: '/content',
+      serveStaticOptions: {
+        index: false,
+      },
     }),
   ],
   controllers: [],
@@ -33,10 +35,10 @@ export class AppModule {
   constructor(private readonly databaseService: DatabaseService) {
     console.log('app module created');
   }
-  
+
   async onModuleInit() {
     console.log('AppModule initialized, checking database connection...');
-    
+
     // Даем время на установление соединения с БД
     setTimeout(async () => {
       try {

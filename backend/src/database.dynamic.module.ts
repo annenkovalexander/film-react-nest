@@ -1,9 +1,5 @@
 // database.dynamic.module.ts
-import {
-  DynamicModule,
-  Global,
-  Module,
-} from '@nestjs/common';
+import { DynamicModule, Global, Module } from '@nestjs/common';
 import { MongoDatabaseModule } from './database/mongo-database.module';
 import { PostgresDatabaseModule } from './database/postgres-database.module';
 
@@ -11,7 +7,7 @@ import { PostgresDatabaseModule } from './database/postgres-database.module';
 @Module({})
 export class DatabaseDynamicModule {
   static forRootAsync(): DynamicModule {
-    const driver = 'mongodb';
+    const driver = process?.env?.DATABASE_DRIVER || 'postgres';
     console.log(`Initializing database with driver: ${driver}`);
 
     if (driver === 'mongodb') {

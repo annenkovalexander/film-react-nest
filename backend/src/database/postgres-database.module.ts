@@ -3,6 +3,14 @@ import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
 import { AppConfigModule } from '../app.config.module';
 import { DatabaseService } from '../database.service';
+import {
+  FILM_REPOSITORY_TOKEN,
+  ORDER_REPOSITORY_TOKEN,
+} from '../shared/di-tokens';
+import { OrderPostgresRepository } from '../repository/postgres/repository/order.repository';
+import { FilmPostgresRepository } from '../repository/postgres/repository/film.repository';
+import { OrderEntity } from '../repository/postgres/entities/order.entity';
+import { FilmEntity } from '../repository/postgres/entities/film.entity';
 import { AppConfig } from 'src/app.config.provider';
 
 @Global()
@@ -20,11 +28,12 @@ export class PostgresDatabaseModule {
           username: config.database.username,
           password: config.database.password,
           database: config.database.database_name,
-          entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+          entities: [OrderEntity, FilmEntity],
           synchronize: true,
         }),
         inject: ['CONFIG'],
       }),
+      TypeOrmModule.forFeature([OrderEntity, FilmEntity]),
     ];
 
     const providers: Provider[] = [
@@ -35,13 +44,21 @@ export class PostgresDatabaseModule {
         },
         inject: ['CONFIG', getDataSourceToken()],
       },
+      {
+        provide: ORDER_REPOSITORY_TOKEN,
+        useClass: OrderPostgresRepository,
+      },
+      {
+        provide: FILM_REPOSITORY_TOKEN,
+        useClass: FilmPostgresRepository,
+      },
     ];
 
     return {
       module: PostgresDatabaseModule,
       imports,
       providers,
-      exports: [DatabaseService],
+      exports: [DatabaseService, ORDER_REPOSITORY_TOKEN, FILM_REPOSITORY_TOKEN],
     };
   }
 }
