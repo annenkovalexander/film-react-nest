@@ -11,6 +11,7 @@ import {
 } from '../repository/mongodb/schemas/orders.schema';
 import { Film, FilmSchema } from '../repository/mongodb/schemas/films.schema';
 import { AppConfig } from 'src/app.config.provider';
+import { Connection } from 'mongoose';
 
 @Global() // ← ДОЛЖЕН БЫТЬ @Global()
 @Module({})
@@ -56,7 +57,7 @@ export class MongoDatabaseModule {
     const providers: Provider[] = [
       {
         provide: DatabaseService,
-        useFactory: (config: AppConfig, mongooseConnection: any) => {
+        useFactory: (config: AppConfig, mongooseConnection: Connection) => {
           return new DatabaseService(config, mongooseConnection, undefined);
         },
         inject: ['CONFIG', getConnectionToken()],

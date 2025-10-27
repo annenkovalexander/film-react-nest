@@ -1,9 +1,10 @@
+import { ListDatabasesResult } from 'typeorm';
 import { AppConfig } from './app.config.provider';
 import { MongoDatabaseService } from './database_mongodb.service';
 import { PostgresDatabaseService } from './database_posrgresql_service';
 
 export interface IDatabaseService {
-  listDatabases(): Promise<string[]>;
+  listDatabases(): Promise<ListDatabasesResult | string[]>;
 }
 
 export const DatabaseServiceProvider = {

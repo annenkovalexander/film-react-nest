@@ -8,7 +8,7 @@
   "scripts": {
     "build": "nest build && cp -R public dist/",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start && cp -R public dist/",
+    "start": "rm -rf dist/ && mkdir dist/ && cp -R public dist/ && nest start",
     "start:dev": "nest start",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",

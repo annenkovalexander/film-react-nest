@@ -1,5 +1,5 @@
 // films/films.service.ts
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { IFilmRepository } from '../shared/repositories/film.repository.interface';
 import { IFilm, ISession } from '../shared/entities/film.interface';
 import { ITicket } from '../shared/entities/order.interface';
@@ -19,15 +19,27 @@ export class FilmsService {
   }
 
   async getSchedule(filmId: string): Promise<ISession[]> {
-    return this.filmsRepository.getFilmSessions(filmId);
+    const sessionExists = await this.filmsRepository.getFilmSessions(filmId);
+    if (sessionExists.length) {
+      return this.filmsRepository.getFilmSessions(filmId);
+    }
+    throw new NotFoundException('Сеанса на указанный фильм не существует');
   }
 
   async getFilmSessions(filmId: string): Promise<ISession[]> {
-    return this.filmsRepository.getFilmSessions(filmId);
+    const sessionExists = await this.filmsRepository.getFilmSessions(filmId);
+    if (sessionExists.length) {
+      return this.filmsRepository.getFilmSessions(filmId);
+    }
+    throw new NotFoundException('Сеанса на указанный фильм не существует');
   }
 
   async getSession(sessionId: string): Promise<ISession | null> {
-    return this.filmsRepository.findBySessionId(sessionId);
+    const session = await this.filmsRepository.findBySessionId(sessionId);
+    if (session) {
+      return this.filmsRepository.findBySessionId(sessionId);
+    }
+    throw new NotFoundException('Сеанса на фильм не существует');
   }
 
   async getOccupatedSeats(tickets: ITicket[]): Promise<string[]> {
@@ -41,7 +53,11 @@ export class FilmsService {
   }
 
   async findById(id: string): Promise<IFilm | null> {
-    return this.filmsRepository.findById(id);
+    const film = await this.filmsRepository.findById(id);
+    if (film) {
+      return this.filmsRepository.findById(id);
+    }
+    throw new NotFoundException('Фильм не найден');
   }
 
   // Метод для обратной совместимости с твоим кодом

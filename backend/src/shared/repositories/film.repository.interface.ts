@@ -21,7 +21,7 @@ export interface IFilmRepository {
     tickets: ITicket[],
   ): Promise<IFilm | null>;
   // Диагностические методы (опционально)
-  debugFindAll?(): Promise<any>;
+  debugFindAll?(): Promise<IFilm[]>;
   checkConnection?(): Promise<void>;
   quickDebug?(): Promise<void>;
 }

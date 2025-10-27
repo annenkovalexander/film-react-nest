@@ -21,14 +21,14 @@ export class FilmMongoRepository implements IFilmRepository {
       const collections = await collectionsCursor;
       console.log(
         'Available collections:',
-        collections.map((c: any) => c.name),
+        collections.map((c: { name: string }) => c.name),
       );
     } catch (error) {
       console.error('Connection check failed:', error);
     }
   }
 
-  async debugFindAll(): Promise<any> {
+  async debugFindAll(): Promise<IFilm[]> {
     console.log('=== DEBUG FilmMongoRepository ===');
 
     try {
@@ -45,7 +45,7 @@ export class FilmMongoRepository implements IFilmRepository {
       const collections = await collectionsCursor;
       console.log(
         'All collections:',
-        collections.map((c: any) => c.name),
+        collections.map((c: { name: string }) => c.name),
       );
       // 4. Проверим конкретные коллекции
       const targetCollections = [
@@ -165,7 +165,7 @@ export class FilmMongoRepository implements IFilmRepository {
       .findOne({ 'schedule.id': sessionId }, { 'schedule.$': 1 })
       .exec();
 
-    return film?.schedule[0] ? this.sessionToDomain(film.schedule[0]) : null;
+    return film?.schedule[0] ? film.schedule[0] : null;
   }
 
   async getFilmSessions(filmId: string): Promise<ISession[]> {
@@ -200,23 +200,9 @@ export class FilmMongoRepository implements IFilmRepository {
       title: document.title,
       about: document.about,
       description: document.description,
-      schedule: document.schedule.map((session) =>
-        this.sessionToDomain(session),
-      ),
+      schedule: document.schedule,
       createdAt: document.createdAt,
       updatedAt: document.updatedAt,
-    };
-  }
-
-  private sessionToDomain(session: any): ISession {
-    return {
-      id: session.id,
-      daytime: session.daytime,
-      hall: session.hall,
-      rows: session.rows,
-      seats: session.seats,
-      price: session.price,
-      taken: session.taken || [],
     };
   }
 }

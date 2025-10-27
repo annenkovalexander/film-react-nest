@@ -7,7 +7,7 @@ import { IDatabaseService } from './database.provider';
 export class PostgresDatabaseService implements IDatabaseService {
   constructor(@Inject(DataSource) private readonly dataSource: DataSource) {}
 
-  async listDatabases(): Promise<any> {
+  async listDatabases(): Promise<string[]> {
     const result = await this.dataSource.query(
       'SELECT datname FROM pg_database',
     );

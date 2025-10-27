@@ -27,14 +27,17 @@ export class DatabaseService {
         const db = this.mongooseConnection.db;
         const adminDb = db.admin();
         const result = await adminDb.listDatabases();
-        return result.databases.map((db: any) => db.name);
+        return result.databases.map(
+          (db: { name: string; sizeOnDisk?: number; empty?: boolean }) =>
+            db.name,
+        );
       } else if (driver === 'postgres' && this.dataSource) {
         const result = await this.dataSource.query(`
           SELECT datname as name 
           FROM pg_database 
           WHERE datistemplate = false;
         `);
-        return result.map((row: any) => row.name);
+        return result.map((row: { name: string }) => row.name);
       } else {
         throw new Error(
           `Unsupported database driver: ${driver} or connection not available`,
