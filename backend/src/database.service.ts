@@ -1,31 +1,51 @@
-import { Injectable } from '@nestjs/common';
+// database.service.ts
+import { Injectable, Inject, Optional } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
+import { InjectDataSource } from '@nestjs/typeorm';
 import { Connection } from 'mongoose';
+import { DataSource } from 'typeorm';
+import { AppConfig } from './app.config.provider';
 
 @Injectable()
 export class DatabaseService {
-  constructor(@InjectConnection() private readonly connection: Connection) {
-    this.connection.on('connected', () => {
-      console.log('MongoDB успешно подключен (событие connected)');
-    });
+  constructor(
+    @Inject('CONFIG') private readonly config: AppConfig,
+    @Optional()
+    @InjectConnection()
+    private readonly mongooseConnection?: Connection,
+    @Optional() @InjectDataSource() private readonly dataSource?: DataSource,
+  ) {}
 
-    this.connection.on('error', (err) => {
-      console.error('Ошибка подключения к MongoDB:', err);
-    });
-
-    this.connection.on('disconnected', () => {
-      console.warn('MongoDB отключен (событие disconnected)');
-    });
-
-    if (this.connection.readyState === 1) {
-      console.log(
-        'MongoDB уже подключен (readyState = 1) при инициализации DatabaseService',
-      );
-    }
-  }
   async listDatabases(): Promise<string[]> {
-    const adminDb = this.connection.db.admin();
-    const result = await adminDb.listDatabases();
-    return result.databases.map((db) => db.name);
+    const driver = this.config.database.driver?.toLowerCase();
+    console.log('Database driver:', driver);
+    console.log('Mongoose connection available:', !!this.mongooseConnection);
+    console.log('TypeORM connection available:', !!this.dataSource);
+
+    try {
+      if (driver === 'mongodb' && this.mongooseConnection) {
+        const db = this.mongooseConnection.db;
+        const adminDb = db.admin();
+        const result = await adminDb.listDatabases();
+        return result.databases.map(
+          (db: { name: string; sizeOnDisk?: number; empty?: boolean }) =>
+            db.name,
+        );
+      } else if (driver === 'postgres' && this.dataSource) {
+        const result = await this.dataSource.query(`
+          SELECT datname as name 
+          FROM pg_database 
+          WHERE datistemplate = false;
+        `);
+        return result.map((row: { name: string }) => row.name);
+      } else {
+        throw new Error(
+          `Unsupported database driver: ${driver} or connection not available`,
+        );
+      }
+    } catch (error) {
+      console.error('Error listing databases:', error);
+      return [];
+    }
   }
 }

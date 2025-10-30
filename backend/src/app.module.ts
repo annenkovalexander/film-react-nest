@@ -1,14 +1,13 @@
+// app.module.ts
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'node:path';
 
-import { AppConfig, configProvider } from './app.config.provider';
 import { FilmModule } from './repository/films.module';
 import { OrderModule } from './repository/orders.module';
-import { DatabaseModule } from './database.module';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseService } from './database.service';
+import { DatabaseDynamicModule } from './database.dynamic.module';
 import { AppConfigModule } from './app.config.module';
 
 @Module({
@@ -17,33 +16,38 @@ import { AppConfigModule } from './app.config.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    // @todo: Добавьте раздачу статических файлов из public
-    MongooseModule.forRootAsync({
-      imports: [AppConfigModule],
-      useFactory: async (config: AppConfig) => {
-        return {
-          uri: config.database.url + config.database.database_name,
-        };
-      },
-      inject: ['CONFIG'],
-    }),
-    OrderModule,
+    AppConfigModule,
+    DatabaseDynamicModule.forRootAsync(),
     FilmModule,
-    DatabaseModule,
+    OrderModule,
     ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, '..', 'public', 'content'), // корень — папка public/content
-      serveRoot: '/content', // префикс URL
+      rootPath: path.join(__dirname, 'public', 'content'), // ← ИСПРАВЛЕНО!
+      serveRoot: '/content',
+      serveStaticOptions: {
+        index: false,
+      },
     }),
   ],
   controllers: [],
-  providers: [configProvider, DatabaseService],
+  providers: [],
 })
 export class AppModule {
   constructor(private readonly databaseService: DatabaseService) {
     console.log('app module created');
   }
+
   async onModuleInit() {
-    const databases = await this.databaseService.listDatabases();
-    console.log('Список баз данных:', databases);
+    console.log('AppModule initialized, checking database connection...');
+
+    // Даем время на установление соединения с БД
+    setTimeout(async () => {
+      try {
+        console.log('Getting list of databases...');
+        const databases = await this.databaseService.listDatabases();
+        console.log('Список баз данных:', databases);
+      } catch (error) {
+        console.error('Failed to list databases:', error);
+      }
+    }, 2000);
   }
 }

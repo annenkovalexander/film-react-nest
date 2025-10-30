@@ -9,8 +9,9 @@ export class Ticket {
     required: true,
     type: Date,
     validate: {
-      validator: (v: any) => !isNaN(Date.parse(v)),
-      message: (props: any) => `${props.value} не является датой!`,
+      validator: (v: string) => !isNaN(Date.parse(v)),
+      message: (props: { value: string }) =>
+        `${props.value} не является датой!`,
     },
   })
   daytime: Date;
@@ -21,7 +22,7 @@ export class Ticket {
         /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
           v,
         ),
-      message: (props) => `${props.value} это не UUID!`,
+      message: (props: { value: string }) => `${props.value} это не UUID!`,
     },
   })
   film: string;
@@ -47,7 +48,11 @@ export class Ticket {
       message: (props) => `${props.value} это не UUID!`,
     },
   })
-  session: string;
+  @Prop({
+    required: true,
+    type: String,
+  })
+  sessionId: string;
 }
 
 export const TicketSchema = SchemaFactory.createForClass(Ticket);

@@ -1,0 +1,3 @@
+// shared/di-tokens.ts
+export const FILM_REPOSITORY_TOKEN = 'FILM_REPOSITORY_TOKEN';
+export const ORDER_REPOSITORY_TOKEN = 'ORDER_REPOSITORY_TOKEN';

@@ -12,7 +12,7 @@ export class FilmSchedule {
         /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
           v,
         ),
-      message: (props: any) => `${props.value} это не UUID!`,
+      message: (props: { value: string }) => `${props.value} это не UUID!`,
     },
   })
   id: string;
@@ -20,8 +20,9 @@ export class FilmSchedule {
     required: true,
     type: Date,
     validate: {
-      validator: (v: any) => !isNaN(Date.parse(v)),
-      message: (props: any) => `${props.value} не является датой!`,
+      validator: (v: string) => !isNaN(Date.parse(v)),
+      message: (props: { value: string }) =>
+        `${props.value} не является датой!`,
     },
   })
   daytime: Date;
@@ -49,7 +50,7 @@ export class FilmSchedule {
 
 export const FilmScheduleSchema = SchemaFactory.createForClass(FilmSchedule);
 
-@Schema()
+@Schema({ timestamps: true })
 export class Film {
   @Prop({
     required: true,
@@ -58,7 +59,7 @@ export class Film {
         /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
           v,
         ),
-      message: (props) => `${props.value} это не UUID!`,
+      message: (props: { value: string }) => `${props.value} это не UUID!`,
     },
   })
   id: string;
@@ -76,7 +77,7 @@ export class Film {
     default: [],
     validate: {
       validator: (v: string[]) =>
-        v.every((item: any) => typeof item === 'string'),
+        v.every((item: unknown) => typeof item === 'string'),
       message: 'Каждый элемент массива должен быть непустой строкой',
     },
   })
@@ -109,6 +110,10 @@ export class Film {
   schedule: FilmSchedule[];
 }
 
-export type FilmDocument = Film & Document;
+export type FilmDocument = Film &
+  Document & {
+    createdAt: Date;
+    updatedAt: Date;
+  };
 
 export const FilmSchema = SchemaFactory.createForClass(Film);

@@ -1,15 +1,24 @@
-import { Ticket } from 'src/repository/orders.schema';
+import { ITicket } from '../shared/entities/order.interface';
 
-export const checkOccupiedSeats: (
-  taken: string[],
-  tickets: Ticket[],
-) => boolean = (taken, tickets) => {
-  const newSeats = tickets.map((ticket: Ticket) => {
-    return `${ticket.row}:${ticket.seat}`;
-  });
-  const filteredSeats = newSeats.filter((seat: string) => {
-    return taken.indexOf(seat) !== -1;
-  });
+export function checkOccupiedSeats(
+  takenSeats: string[], // формат "row:seat"
+  tickets: ITicket[],
+): boolean {
+  console.log('🎫 checkOccupiedSeats called:');
+  console.log('   Taken seats:', takenSeats);
+  console.log('   Requested tickets:', tickets);
 
-  return filteredSeats.length === 0;
-};
+  for (const ticket of tickets) {
+    const seatKey = `${ticket.row}:${ticket.seat}`;
+    console.log(`   Checking seat: ${seatKey}`);
+
+    if (takenSeats.includes(seatKey)) {
+      console.log(`   ❌ Seat ${seatKey} is already taken!`);
+      return false;
+    }
+    console.log(`   ✅ Seat ${seatKey} is available`);
+  }
+
+  console.log('   🎉 All seats are available!');
+  return true;
+}
