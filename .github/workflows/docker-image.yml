@@ -2,7 +2,7 @@ name: CI Docker Build and Publish
 
 on:
   push:
-    branches: [review-2]        # триггер, можно что угодно
+    branches: [main]        # триггер, можно что угодно
 
 jobs:
   build-and-push:
