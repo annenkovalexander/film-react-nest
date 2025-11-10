@@ -43,7 +43,7 @@ export class AppModule {
   async onModuleInit() {
     this.logger.log('AppModule initialized, checking database connection...');
 
-    // Даем время на установление соединения с БД
+    // Даем время на установление соединения с БД 
     setTimeout(async () => {
       try {
         this.logger.log('Getting list of databases...');
