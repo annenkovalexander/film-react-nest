@@ -1,5 +1,5 @@
 // database/postgres-database.module.ts
-import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
+import { DynamicModule, Global, LoggerService, Module, Provider } from '@nestjs/common';
 import {
   TypeOrmModule,
   TypeOrmModuleOptions,
@@ -20,6 +20,7 @@ import {
 } from '../repository/postgres/entities/film.entity';
 import { AppConfig } from 'src/app.config.provider';
 import { DataSource } from 'typeorm';
+import { LoggerModule } from 'src/utils/Loggers/logger.module';
 
 @Global()
 @Module({})
@@ -47,8 +48,8 @@ export class PostgresDatabaseModule {
     const providers: Provider[] = [
       {
         provide: DatabaseService,
-        useFactory: (config: AppConfig, dataSource: DataSource) => {
-          return new DatabaseService(config, undefined, dataSource);
+        useFactory: (config: AppConfig, dataSource: DataSource, logger: LoggerService) => {
+          return new DatabaseService(config, undefined, dataSource, logger);
         },
         inject: ['CONFIG', getDataSourceToken()],
       },

@@ -1,5 +1,5 @@
 // database/mongo-database.module.ts
-import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
+import { DynamicModule, Global, LoggerService, Module, Provider } from '@nestjs/common';
 import { MongooseModule, getConnectionToken } from '@nestjs/mongoose';
 import { AppConfigModule } from '../app.config.module';
 import { DatabaseService } from '../database.service';
@@ -57,8 +57,8 @@ export class MongoDatabaseModule {
     const providers: Provider[] = [
       {
         provide: DatabaseService,
-        useFactory: (config: AppConfig, mongooseConnection: Connection) => {
-          return new DatabaseService(config, mongooseConnection, undefined);
+        useFactory: (config: AppConfig, mongooseConnection: Connection, logger: LoggerService) => {
+          return new DatabaseService(config, mongooseConnection, undefined, logger);
         },
         inject: ['CONFIG', getConnectionToken()],
       },

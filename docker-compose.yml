@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: Film
+      POSTGRES_USER: student
+      POSTGRES_PASSWORD: student
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    environment:
+      NODE_ENV: production
+      DATABASE_DRIVER: "postgres"
+      DATABASE_URL: "db"
+      DATABASE_PORT: '5432'
+      DATABASE_USERNAME: 'student'
+      DATABASE_PASSWORD: 'student'
+      DATABASE_NAME: 'Film'
+
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "80:80"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

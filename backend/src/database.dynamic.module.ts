@@ -8,8 +8,6 @@ import { PostgresDatabaseModule } from './database/postgres-database.module';
 export class DatabaseDynamicModule {
   static forRootAsync(): DynamicModule {
     const driver = process?.env?.DATABASE_DRIVER || 'postgres';
-    console.log(`🔧 Initializing database with driver: ${driver}`);
-
     if (driver === 'mongodb') {
       return MongoDatabaseModule.create();
     } else if (driver === 'postgres') {

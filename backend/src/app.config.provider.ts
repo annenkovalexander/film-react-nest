@@ -13,12 +13,16 @@ export const configProvider = {
       films_collection: configService.get<string>('FILMS_COLLECTION'),
       orders_collection: configService.get<string>('ORDERS_COLLECTION'),
     },
+    logger: {
+      env_type: configService.get<string>('NODE_ENV'),
+    }
   }),
   inject: [ConfigService],
 };
 
 export interface AppConfig {
   database: AppConfigDatabase;
+  logger: AppConfigLogger;
 }
 
 export interface AppConfigDatabase {
@@ -31,3 +35,7 @@ export interface AppConfigDatabase {
   films_collection: string;
   orders_collection: string;
 }
+
+export interface AppConfigLogger {
+  env_type: string;
+} 
