@@ -1,5 +1,5 @@
 // app.module.ts
-import { Module } from '@nestjs/common';
+import { Inject, LoggerService, Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'node:path';
 
@@ -9,6 +9,8 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseService } from './database.service';
 import { DatabaseDynamicModule } from './database.dynamic.module';
 import { AppConfigModule } from './app.config.module';
+import { LoggerProvider } from './utils/Loggers/logger.provider';
+import { LoggerModule } from './utils/Loggers/logger.module';
 
 @Module({
   imports: [
@@ -20,8 +22,9 @@ import { AppConfigModule } from './app.config.module';
     DatabaseDynamicModule.forRootAsync(),
     FilmModule,
     OrderModule,
+    LoggerModule,
     ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, 'public', 'content'), // ← ИСПРАВЛЕНО!
+      rootPath: path.join(__dirname, '..', 'public', 'content'),
       serveRoot: '/content',
       serveStaticOptions: {
         index: false,
@@ -29,24 +32,25 @@ import { AppConfigModule } from './app.config.module';
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [LoggerProvider],
+  exports: [LoggerProvider]
 })
 export class AppModule {
-  constructor(private readonly databaseService: DatabaseService) {
-    console.log('app module created');
+  constructor(@Inject('APP_LOGGER') private readonly logger: LoggerService, private readonly databaseService: DatabaseService) {
+    logger.log('App is started creating...')
   }
 
   async onModuleInit() {
-    console.log('AppModule initialized, checking database connection...');
+    this.logger.log('AppModule initialized, checking database connection...');
 
-    // Даем время на установление соединения с БД
+    // Даем время на установление соединения с БД 
     setTimeout(async () => {
       try {
-        console.log('Getting list of databases...');
-        const databases = await this.databaseService.listDatabases();
-        console.log('Список баз данных:', databases);
+        this.logger.log('Getting list of databases...');
+        const databases = await this.databaseService.listDatabases(this.logger);
+        this.logger.log('Список баз данных:', databases);
       } catch (error) {
-        console.error('Failed to list databases:', error);
+        this.logger.error('Failed to list databases:', error);
       }
     }, 2000);
   }

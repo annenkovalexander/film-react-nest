@@ -4,14 +4,14 @@ import { DataSource } from 'typeorm';
 import {
   FilmEntity,
   FilmSession,
-} from '../repository/postgres/entities/film.entity';
-import { OrderEntity } from '../repository/postgres/entities/order.entity';
+} from '../src/repository/postgres/entities/film.entity';
+import { OrderEntity } from '../src/repository/postgres/entities/order.entity';
 
 async function migrateDirect() {
   console.log('🚀 Starting direct migration...');
 
   // Подключение к MongoDB
-  const mongoClient = new MongoClient('mongodb://localhost:27017');
+  const mongoClient = new MongoClient('mongodb://iMac-Alexander.local:27017');
   await mongoClient.connect();
 
   // Подключение к PostgreSQL

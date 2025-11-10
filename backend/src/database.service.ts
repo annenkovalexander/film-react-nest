@@ -1,5 +1,5 @@
 // database.service.ts
-import { Injectable, Inject, Optional } from '@nestjs/common';
+import { Injectable, Inject, Optional, LoggerService } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { Connection } from 'mongoose';
@@ -14,13 +14,14 @@ export class DatabaseService {
     @InjectConnection()
     private readonly mongooseConnection?: Connection,
     @Optional() @InjectDataSource() private readonly dataSource?: DataSource,
+    @Optional() @Inject('APP_LOGGER') private readonly logger?: LoggerService
   ) {}
 
-  async listDatabases(): Promise<string[]> {
+  async listDatabases(logger?: LoggerService): Promise<string[]> {
     const driver = this.config.database.driver?.toLowerCase();
-    console.log('Database driver:', driver);
-    console.log('Mongoose connection available:', !!this.mongooseConnection);
-    console.log('TypeORM connection available:', !!this.dataSource);
+    logger.log('Database driver:', driver);
+    logger.log('Mongoose connection available:', !!this.mongooseConnection);
+    logger.log('TypeORM connection available:', !!this.dataSource);
 
     try {
       if (driver === 'mongodb' && this.mongooseConnection) {
@@ -44,7 +45,7 @@ export class DatabaseService {
         );
       }
     } catch (error) {
-      console.error('Error listing databases:', error);
+      this.logger.error('Error listing databases:', error);
       return [];
     }
   }
