@@ -17,7 +17,7 @@ async function migrateDirect() {
   // Подключение к PostgreSQL
   const dataSource = new DataSource({
     type: 'postgres',
-    host: 'localhost',
+    host: '62.84.122.184',
     port: 5432,
     username: 'student',
     password: 'student',
