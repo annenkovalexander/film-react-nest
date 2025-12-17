@@ -1,26 +1,31 @@
 // database/postgres-database.module.ts
-import { DynamicModule, Global, LoggerService, Module, Provider } from '@nestjs/common';
+import {
+  DynamicModule,
+  Global,
+  LoggerService,
+  Module,
+  Provider,
+} from '@nestjs/common';
 import {
   TypeOrmModule,
   TypeOrmModuleOptions,
   getDataSourceToken,
 } from '@nestjs/typeorm';
+import { AppConfig } from 'src/app.config.provider';
+import { DataSource } from 'typeorm';
 import { AppConfigModule } from '../app.config.module';
 import { DatabaseService } from '../database.service';
-import {
-  FILM_REPOSITORY_TOKEN,
-  ORDER_REPOSITORY_TOKEN,
-} from '../shared/di-tokens';
-import { OrderPostgresRepository } from '../repository/postgres/repository/order.repository';
-import { FilmPostgresRepository } from '../repository/postgres/repository/film.repository';
-import { OrderEntity } from '../repository/postgres/entities/order.entity';
 import {
   FilmEntity,
   FilmSession,
 } from '../repository/postgres/entities/film.entity';
-import { AppConfig } from 'src/app.config.provider';
-import { DataSource } from 'typeorm';
-import { LoggerModule } from 'src/utils/Loggers/logger.module';
+import { OrderEntity } from '../repository/postgres/entities/order.entity';
+import { FilmPostgresRepository } from '../repository/postgres/repository/film.repository';
+import { OrderPostgresRepository } from '../repository/postgres/repository/order.repository';
+import {
+  FILM_REPOSITORY_TOKEN,
+  ORDER_REPOSITORY_TOKEN,
+} from '../shared/di-tokens';
 
 @Global()
 @Module({})
@@ -48,7 +53,11 @@ export class PostgresDatabaseModule {
     const providers: Provider[] = [
       {
         provide: DatabaseService,
-        useFactory: (config: AppConfig, dataSource: DataSource, logger: LoggerService) => {
+        useFactory: (
+          config: AppConfig,
+          dataSource: DataSource,
+          logger: LoggerService,
+        ) => {
           return new DatabaseService(config, undefined, dataSource, logger);
         },
         inject: ['CONFIG', getDataSourceToken()],

@@ -14,7 +14,7 @@ export class DatabaseService {
     @InjectConnection()
     private readonly mongooseConnection?: Connection,
     @Optional() @InjectDataSource() private readonly dataSource?: DataSource,
-    @Optional() @Inject('APP_LOGGER') private readonly logger?: LoggerService
+    @Optional() @Inject('APP_LOGGER') private readonly logger?: LoggerService,
   ) {}
 
   async listDatabases(logger?: LoggerService): Promise<string[]> {
