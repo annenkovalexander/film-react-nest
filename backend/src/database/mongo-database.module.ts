@@ -28,7 +28,7 @@ export class MongoDatabaseModule {
       MongooseModule.forRootAsync({
         imports: [AppConfigModule],
         useFactory: (config: AppConfig) => ({
-          uri: config.database.url + '/' + config.database.database_name,
+          uri: config.database.url,
         }),
         inject: ['CONFIG'],
       }),
