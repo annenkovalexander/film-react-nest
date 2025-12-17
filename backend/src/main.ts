@@ -1,3 +1,8 @@
+// main.ts
+import * as nodeCrypto from 'crypto';
+
+// подставляем crypto только если его ещё нет
+(globalThis as any).crypto ??= nodeCrypto;
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
