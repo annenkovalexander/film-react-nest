@@ -7,7 +7,7 @@ import { PostgresDatabaseModule } from './database/postgres-database.module';
 @Module({})
 export class DatabaseDynamicModule {
   static forRootAsync(): DynamicModule {
-    const driver = process?.env?.DATABASE_DRIVER || 'postgres';
+    const driver = process?.env?.DATABASE_DRIVER || 'mongodb';
     if (driver === 'mongodb') {
       return MongoDatabaseModule.create();
     } else if (driver === 'postgres') {

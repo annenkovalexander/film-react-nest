@@ -15,7 +15,7 @@ export const configProvider = {
     },
     logger: {
       env_type: configService.get<string>('NODE_ENV'),
-    }
+    },
   }),
   inject: [ConfigService],
 };
@@ -38,4 +38,4 @@ export interface AppConfigDatabase {
 
 export interface AppConfigLogger {
   env_type: string;
-} 
+}

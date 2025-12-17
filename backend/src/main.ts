@@ -1,11 +1,27 @@
-import { NestFactory } from '@nestjs/core';
+// main.ts
+import * as nodeCrypto from 'crypto';
 
+// подставляем crypto только если его ещё нет
+(globalThis as any).crypto ??= nodeCrypto;
+process.on('exit', (code) => {
+  console.log('Process exit with code', code);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception', err);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled rejection', reason);
+});
+
+import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import 'dotenv/config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { bufferLogs: true, });
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
   const logger = app.get('APP_LOGGER');
   app.useLogger(logger);
   app.setGlobalPrefix('api/afisha');

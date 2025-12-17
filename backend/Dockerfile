@@ -10,5 +10,5 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY package*.json ./
 RUN npm ci --omit=dev
-CMD ["node", "dist/main"]
+CMD ["node", "dist/src/main.js"]
 EXPOSE 3000

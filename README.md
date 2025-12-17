@@ -1,5 +1,13 @@
 # FILM!
 
+## Приложение
+
+http://films.student.nomorepartiessbs.ru
+
+## Миграция
+
+Миграция данных осуществлялась с помощью команды npm run migrate:direct из папки backend
+
 ## Установка
 
 ### MongoDB

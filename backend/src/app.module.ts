@@ -33,17 +33,20 @@ import { LoggerModule } from './utils/Loggers/logger.module';
   ],
   controllers: [],
   providers: [LoggerProvider],
-  exports: [LoggerProvider]
+  exports: [LoggerProvider],
 })
 export class AppModule {
-  constructor(@Inject('APP_LOGGER') private readonly logger: LoggerService, private readonly databaseService: DatabaseService) {
-    logger.log('App is started creating...')
+  constructor(
+    @Inject('APP_LOGGER') private readonly logger: LoggerService,
+    private readonly databaseService: DatabaseService,
+  ) {
+    logger.log('App is started creating...');
   }
 
   async onModuleInit() {
     this.logger.log('AppModule initialized, checking database connection...');
 
-    // Даем время на установление соединения с БД 
+    // Даем время на установление соединения с БД
     setTimeout(async () => {
       try {
         this.logger.log('Getting list of databases...');

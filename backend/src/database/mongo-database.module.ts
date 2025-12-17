@@ -1,5 +1,11 @@
 // database/mongo-database.module.ts
-import { DynamicModule, Global, LoggerService, Module, Provider } from '@nestjs/common';
+import {
+  DynamicModule,
+  Global,
+  LoggerService,
+  Module,
+  Provider,
+} from '@nestjs/common';
 import { MongooseModule, getConnectionToken } from '@nestjs/mongoose';
 import { AppConfigModule } from '../app.config.module';
 import { DatabaseService } from '../database.service';
@@ -22,7 +28,7 @@ export class MongoDatabaseModule {
       MongooseModule.forRootAsync({
         imports: [AppConfigModule],
         useFactory: (config: AppConfig) => ({
-          uri: config.database.url + '/' + config.database.database_name,
+          uri: config.database.url,
         }),
         inject: ['CONFIG'],
       }),
@@ -57,8 +63,17 @@ export class MongoDatabaseModule {
     const providers: Provider[] = [
       {
         provide: DatabaseService,
-        useFactory: (config: AppConfig, mongooseConnection: Connection, logger: LoggerService) => {
-          return new DatabaseService(config, mongooseConnection, undefined, logger);
+        useFactory: (
+          config: AppConfig,
+          mongooseConnection: Connection,
+          logger: LoggerService,
+        ) => {
+          return new DatabaseService(
+            config,
+            mongooseConnection,
+            undefined,
+            logger,
+          );
         },
         inject: ['CONFIG', getConnectionToken()],
       },

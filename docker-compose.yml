@@ -11,9 +11,7 @@ services:
       POSTGRES_PASSWORD: student
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: ghcr.io/annenkovalexander/film-react-nest/backend:latest
     container_name: backend
     environment:
       NODE_ENV: production
@@ -28,9 +26,7 @@ services:
       - "3000:3000"
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: ghcr.io/annenkovalexander/film-react-nest/frontend:latest
     container_name: frontend
     ports:
       - "80:80"

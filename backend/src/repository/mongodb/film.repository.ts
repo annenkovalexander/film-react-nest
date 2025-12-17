@@ -38,7 +38,6 @@ export class FilmMongoRepository implements IFilmRepository {
 
       // 2. Проверим базу данных
       const db = this.filmModel.db;
-      console.log('Database name:', db);
 
       // 3. Получим список коллекций (исправлено)
       const collectionsCursor = db.listCollections();

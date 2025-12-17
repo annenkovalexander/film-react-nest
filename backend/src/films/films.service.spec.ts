@@ -8,8 +8,8 @@ const mockFilmsRepository = {
   getSession: jest.fn(),
   getOccupatedSeats: jest.fn(),
   findById: jest.fn(),
-  getSessionByTickets: jest.fn()
-}
+  getSessionByTickets: jest.fn(),
+};
 
 const mockLogger = { log: jest.fn(), error: jest.fn(), warn: jest.fn() };
 
@@ -18,7 +18,11 @@ describe('FilmService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FilmsService, { provide: 'FILM_REPOSITORY_TOKEN', useValue: mockFilmsRepository }, { provide: 'APP_LOGGER', useValue: mockLogger }],
+      providers: [
+        FilmsService,
+        { provide: 'FILM_REPOSITORY_TOKEN', useValue: mockFilmsRepository },
+        { provide: 'APP_LOGGER', useValue: mockLogger },
+      ],
     }).compile();
 
     service = module.get<FilmsService>(FilmsService);

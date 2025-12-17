@@ -25,12 +25,12 @@ export class TSKVLogger implements LoggerService {
     level: string,
     message: string,
     context?: string,
-    trace?: string
+    trace?: string,
   ): string {
     const entries: string[] = [
       `level=${level}`,
       `ts=${Date.now()}`,
-      `msg=${this.escape(message)}`
+      `msg=${this.escape(message)}`,
     ];
     if (context) entries.push(`context=${this.escape(context)}`);
     if (trace) entries.push(`trace=${this.escape(trace)}`);
@@ -38,7 +38,9 @@ export class TSKVLogger implements LoggerService {
   }
 
   private escape(val: any): string {
-  if (val === undefined || val === null) return '';
-    return String(val).replace(/\t/g, ' ').replace(/[\r\n]+/g, '\\n');
+    if (val === undefined || val === null) return '';
+    return String(val)
+      .replace(/\t/g, ' ')
+      .replace(/[\r\n]+/g, '\\n');
   }
 }
