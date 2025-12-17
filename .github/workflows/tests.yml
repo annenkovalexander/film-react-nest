@@ -32,8 +32,6 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 18.x
-    - name: Set env variable for DB URL
-      run: echo "DATABASE_URL=mongodb://localhost:27017/practicum" >> $GITHUB_ENV
     - name: Get testing lib
       run: set -eu && git clone --depth 1 $REP_TESTS $DIR_TESTS
     - name: Install dependencies
